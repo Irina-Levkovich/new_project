@@ -1,0 +1,140 @@
+{% extends "base.html" %}
+
+{% block content %}
+<a href="{% url 'expenses:expense-create' %}">add</a>
+<br>
+<br>
+<!--added some styles-->
+<form action="" method="get">
+	<h3 style="color:blue"><mark><strong>Search by:</strong></mark></h3>
+<!--	added selection for search-->
+	 <select id="date" name="date">
+	 <option value="date">date to</option>
+<!--use of search and filter function in html failed
+	{% for obj in search %}
+	  <option value="date">date to</option>
+	<tr>
+		<td style="background-color:#D6EEEE">{{ page_obj.start_index|add:forloop.counter0 }}.</td>
+		<td style="background-color:#D6EEEE">{{ obj.category|default:"-" }}</td>
+		<td>{{ obj.name|default:"-" }}</td>
+		<td>{{ obj.amount|floatformat:2 }}</td>
+		<td>{{obj.date}}</td>
+		<td>
+		  <a href="{% url 'expenses:expense-edit' obj.id %}">edit</a>
+		  <a href="{% url 'expenses:expense-delete' obj.id %}">delete</a>
+		</td>
+	</tr>
+	  {% endfor %}
+
+    <option value="date">date from</option>
+	{% for obj in searching %}-->
+
+	<!--  <tr>
+		<td style="background-color:#D6EEEE">{{ page_obj.start_index|add:forloop.counter0 }}.</td>
+		<td style="background-color:#D6EEEE">{{ obj.category|default:"-" }}</td>
+		<td>{{ obj.name|default:"-" }}</td>
+		<td>{{ obj.amount|floatformat:2 }}</td>
+		<td>{{obj.date}}</td>
+		<td>
+		  <a href="{% url 'expenses:expense-edit' obj.id %}">edit</a>
+		  <a href="{% url 'expenses:expense-delete' obj.id %}">delete</a>
+		</td>
+ 	  </tr>
+	{% endfor %}-->
+	<option value="date">date from</option>
+	<option value="name">name</option>
+	<option value="amount">amount</option>
+	<option value="category">category</option>
+  </select>
+  <br>
+  <br>
+  <button type="submit" style="background-color:hsl(132, 54%, 79%)" value="submit">search</button>
+</form>
+
+<h3 style="color:blue"><strong>Sort by:</strong></h3>
+<form method="get" action="">
+	<!--	added selection for sorting and button-->
+  <input type="checkbox" id="vehicle1" name="vehicle1" value="date_to">
+  <label for="vehicle1"> date to </label><br>
+  <input type="checkbox" id="vehicle2" name="vehicle1" value="date_from">
+  <label for="vehicle2"> date from </label><br>
+  <input type="checkbox" id="vehicle3" name="vehicle2" value="name">
+  <label for="vehicle3"> name </label><br>
+  <input type="checkbox" id="vehicle4" name="vehicle3" value="amount">
+  <label for="vehicle4">amount</label><br>
+  <input type="checkbox" id="vehicle5" name="vehicle3" value="category">
+  <label for="vehicle5">category</label><br>
+  <button type="submit" style="background-color:hsl(132, 54%, 79%)">sort</button>
+</form>
+<br>
+
+<table border="3">
+	<caption><strong>Expenses</strong></caption>
+	<thead>
+	  <tr>
+		<th>no.</th>
+		<th>category</th>
+		<th>name</th>
+		<th>amount</th>
+		<th>date</th>
+		<th>actions</th>
+	  </tr>
+	</thead>
+	<tbody>
+
+	{% for obj in object_list %}
+	  <tr>
+		<td style="background-color:#D6EEEE">{{ page_obj.start_index|add:forloop.counter0 }}.</td>
+		<td style="background-color:#D6EEEE">{{ obj.category|default:"-" }}</td>
+		<td>{{ obj.name|default:"-" }}</td>
+		<td>{{ obj.amount|floatformat:2 }}</td>
+		<td>{{obj.date}}</td>
+		<td>
+		  <a href="{% url 'expenses:expense-edit' obj.id %}">edit</a>
+		  <a href="{% url 'expenses:expense-delete' obj.id %}">delete</a>
+		</td>
+	  </tr>
+	  {% empty %}
+	  <tr>
+		<td colspan="5">no items</td>
+	  </tr>
+	{% endfor %}
+	</tbody>
+</table>
+
+{% include "_pagination.html" %}
+<hr>
+<table border="3">
+  <caption><strong>Summary per category</strong></caption>
+  <tr>
+    {% for category, total in summary_per_category.items %}
+	<tr>
+		<td style="background-color:#D6EEEE">{{category}}:</td>
+		<td>{{total|floatformat:2}}</td>
+    </tr>
+	{% endfor %}
+	<!--added a row and a column for the total amount, but I did't make it count-->
+	<tr>
+		<td style="background-color:#D6EEEE">Total amount:</td>
+		<td>{{sumtotal}}</td>
+	</tr>
+
+</table>
+
+<hr>
+<!--added table for the total amount for the year and month, but I did't make it count-->
+<table border="3">
+  <caption><strong>Total summary</strong></caption>
+  <tr>
+	<tr>
+		<td style="background-color:#D6EEEE">Per year</td>
+		<td>{}</td>
+	</tr>
+
+	<tr>
+		<td style="background-color:#D6EEEE">Per month</td>
+		<td>{}</td>
+	</tr>
+
+</table>
+{% endblock %}
